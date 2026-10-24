@@ -3,18 +3,28 @@ import type { Faq } from "@/content/services";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { faqSchema } from "@/lib/structured-data";
 
-/** Native <details> disclosure: keyboard and screen-reader support with no JavaScript. */
+/**
+ * Native <details> disclosure: keyboard and screen-reader support with no JavaScript. Where the
+ * browser supports ::details-content, the answer eases open (CSS only); elsewhere it opens instantly.
+ */
 export function FaqList({ faqs, withSchema = true }: { faqs: Faq[]; withSchema?: boolean }) {
   return (
     <>
-      <div className="border-t border-line">
-        {faqs.map((faq) => (
-          <details key={faq.question} className="group border-b border-line">
-            <summary className="flex min-h-14 cursor-pointer list-none items-start justify-between gap-6 py-5 text-title font-semibold transition-colors hover:text-accent [&::-webkit-details-marker]:hidden">
+      <div className="grid gap-3">
+        {faqs.map((faq, i) => (
+          <details
+            key={faq.question}
+            data-reveal
+            style={{ "--i": i } as React.CSSProperties}
+            className="faq-item group rounded-[var(--radius-md)] border border-line bg-white shadow-[var(--shadow-sm)] transition-[border-color,box-shadow] duration-300 hover:border-line-strong open:border-[var(--gold-500)] open:shadow-[var(--shadow-md)]"
+          >
+            <summary className="flex min-h-16 cursor-pointer items-center justify-between gap-6 px-5 py-5 text-title font-semibold text-brand sm:px-7">
               <span>{faq.question}</span>
-              <Plus aria-hidden="true" className="mt-1 size-5 shrink-0 text-ornament transition-transform duration-200 group-open:rotate-45" strokeWidth={1.75} />
+              <span className="faq-icon grid size-9 shrink-0 place-items-center rounded-full border border-line-strong text-brand">
+                <Plus aria-hidden="true" className="size-4" strokeWidth={1.75} />
+              </span>
             </summary>
-            <p className="max-w-3xl pb-6 pr-10 text-fg-muted">{faq.answer}</p>
+            <p className="max-w-3xl px-5 pb-6 pr-16 text-fg-muted sm:px-7">{faq.answer}</p>
           </details>
         ))}
       </div>

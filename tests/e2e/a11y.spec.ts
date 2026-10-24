@@ -58,9 +58,12 @@ test("respects reduced motion: nothing is hidden waiting for an animation", asyn
   const context = await browser.newContext({ reducedMotion: "reduce" });
   const page = await context.newPage();
   await page.goto("/");
-  expect(await page.locator(".motion-reveal.is-pending").count()).toBe(0);
-  for (const el of await page.locator(".motion-rise, .motion-reveal").all()) {
-    expect(Number(await el.evaluate((n) => getComputedStyle(n).opacity))).toBe(1);
+  expect(await page.locator("[data-reveal].is-pending").count()).toBe(0);
+  for (const el of await page.locator(".motion-rise, .motion-slide, .motion-fade, [data-reveal], .line-mask > span").all()) {
+    const style = await el.evaluate((n) => ({ opacity: getComputedStyle(n).opacity, transform: getComputedStyle(n).transform, clip: getComputedStyle(n).clipPath }));
+    expect(Number(style.opacity)).toBe(1);
+    expect(style.transform).toBe("none");
+    expect(style.clip).toBe("none");
   }
   await context.close();
 });

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Check } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { InquirySection } from "@/components/inquiry/InquirySection";
 import { FaqList } from "@/components/sections/FaqList";
 import { PageHeader } from "@/components/sections/PageHeader";
@@ -13,6 +13,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { getInsight } from "@/content/insights";
 import { packageIntro, packagesEnabled } from "@/content/packages";
 import { getPillar, getService } from "@/content/services";
+import { servicePhotos } from "@/content/media";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/seo";
 import { serviceSchema } from "@/lib/structured-data";
@@ -28,6 +29,11 @@ export function ServicePage({ slug }: { slug: string }) {
   const pillar = getPillar(service.pillar);
   const showPackages = slug === "branding-and-design-consulting-services" && packagesEnabled();
   const relatedInsights = service.insights.map(getInsight).filter((i) => i !== undefined);
+  // Deliverables are numbered continuously across groups.
+  const deliverableGroups = service.deliverables.map((group, gi) => ({
+    ...group,
+    offset: service.deliverables.slice(0, gi).reduce((n, g) => n + g.items.length, 0),
+  }));
 
   return (
     <>
@@ -36,12 +42,13 @@ export function ServicePage({ slug }: { slug: string }) {
           { name: "Services", path: "/services/" },
           { name: service.name, path: `/${slug}/` },
         ]}
-        eyebrow={`${pillar.number} / ${pillar.name}`}
+        eyebrow={`${pillar.number} — ${pillar.name}`}
         title={service.h1}
         lead={service.headline}
+        image={servicePhotos[slug]}
         actions={
           <>
-            <ButtonLink href="#inquiry" arrow>
+            <ButtonLink href="#inquiry" arrow magnetic>
               Start a project
             </ButtonLink>
             <a href={site.phone.href} className="btn btn-secondary tabular">
@@ -50,42 +57,54 @@ export function ServicePage({ slug }: { slug: string }) {
           </>
         }
         aside={
-          <div className="rounded-md border border-line bg-bg-raised p-6">
-            <h2 className="eyebrow eyebrow-plain">What’s included</h2>
-            <ul className="mt-4 space-y-2">
-              {service.deliverables
-                .flatMap((g) => g.items)
-                .slice(0, 6)
-                .map((d) => (
-                  <li key={d.title} className="flex gap-3">
-                    <Check aria-hidden="true" className="mt-1 size-4 shrink-0 text-ornament" strokeWidth={2} />
-                    <a href="#deliverables" className="hover:text-accent">
-                      {d.title}
-                    </a>
-                  </li>
-                ))}
-            </ul>
+          <div data-spotlight>
+            <div className="card spot rounded-[var(--radius-lg)] p-6 shadow-[var(--shadow-lg)] sm:p-7">
+              <h2 className="eyebrow">What’s included</h2>
+              <ul className="mt-5 space-y-1">
+                {service.deliverables
+                  .flatMap((g) => g.items)
+                  .slice(0, 6)
+                  .map((d) => (
+                    <li key={d.title}>
+                      <a href="#deliverables" className="group flex min-h-10 items-center gap-3 font-medium text-fg-muted transition-colors hover:text-brand">
+                        <Check aria-hidden="true" className="size-4 shrink-0 text-success" strokeWidth={2} />
+                        <span className="link-draw">{d.title}</span>
+                      </a>
+                    </li>
+                  ))}
+              </ul>
+            </div>
           </div>
         }
       />
 
-      {/* Intro + problems */}
+      {/* The challenge */}
       <section aria-labelledby="problems-title" className="section">
-        <div className="container-site grid gap-12 lg:grid-cols-12 lg:gap-16">
-          <div className="space-y-5 text-lead text-fg-muted lg:col-span-6">
-            {service.intro.map((p) => (
-              <p key={p.slice(0, 24)}>{p}</p>
-            ))}
+        <div className="container-site grid gap-14 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-5" data-reveal>
+            <p className="eyebrow mb-6">The challenge</p>
+            <div className="space-y-6">
+              {service.intro.map((p, i) => (
+                <p key={p.slice(0, 24)} className={i === 0 ? "scroll-sweep text-display-s text-fg" : "text-lead text-fg-muted"}>
+                  {p}
+                </p>
+              ))}
+            </div>
           </div>
-          <div className="lg:col-span-6">
-            <h2 id="problems-title" className="eyebrow mb-6">
-              Sound familiar?
+          <div className="lg:col-span-7">
+            <h2 id="problems-title" className="text-display-m" data-reveal>
+              Sound <span className="em-accent">familiar?</span>
             </h2>
-            <ul className="border-t border-line">
-              {service.problems.map((problem) => (
-                <li key={problem.title} className="border-b border-line py-6">
-                  <h3 className="font-display text-[1.625rem] leading-tight">{problem.title}</h3>
-                  <p className="mt-2 text-fg-muted">{problem.body}</p>
+            <ul data-spotlight className="mt-10 grid gap-3">
+              {service.problems.map((problem, i) => (
+                <li key={problem.title} data-reveal style={{ "--i": i } as React.CSSProperties} className="card spot grid gap-3 p-6 sm:grid-cols-[3.5rem_1fr] sm:p-8">
+                  <span className="index-num text-[2rem] leading-none" aria-hidden="true">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <h3 className="text-title font-semibold">{problem.title}</h3>
+                    <p className="mt-2 text-fg-muted">{problem.body}</p>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -93,18 +112,25 @@ export function ServicePage({ slug }: { slug: string }) {
         </div>
       </section>
 
-      {/* Outcomes */}
-      <section aria-labelledby="outcomes-title" className="surface-navy section">
+      {/* Outcomes — asymmetric bento */}
+      <section aria-labelledby="outcomes-title" className="surface-raised section border-y border-line">
         <div className="container-site">
           <SectionHeading id="outcomes-title" eyebrow="Outcomes" title={service.outcomesTitle} />
-          <ol className="mt-12 grid gap-px overflow-hidden rounded-md border border-line bg-[var(--line)] md:grid-cols-3">
+          <ol data-spotlight className="mt-14 grid gap-3 md:grid-cols-6">
             {service.outcomes.map((o, i) => (
-              <li key={o.title} className="motion-reveal bg-bg p-7 sm:p-8">
-                <p className="tabular text-label font-semibold tracking-[0.14em] text-ornament" aria-hidden="true">
+              <li
+                key={o.title}
+                data-reveal
+                style={{ "--i": i } as React.CSSProperties}
+                className={`card spot lift flex flex-col justify-between gap-10 p-7 sm:p-9 ${i === 0 ? "surface-navy border-transparent md:col-span-6 lg:col-span-3 lg:row-span-2" : "md:col-span-3"}`}
+              >
+                <span className="index-num text-[2.5rem] leading-none" aria-hidden="true">
                   {String(i + 1).padStart(2, "0")}
-                </p>
-                <h3 className="mt-3 text-title font-semibold">{o.title}</h3>
-                <p className="mt-2 text-fg-muted">{o.body}</p>
+                </span>
+                <div>
+                  <h3 className={i === 0 ? "text-display-s" : "text-title font-semibold"}>{o.title}</h3>
+                  <p className="mt-3 max-w-md text-fg-muted">{o.body}</p>
+                </div>
               </li>
             ))}
           </ol>
@@ -113,43 +139,60 @@ export function ServicePage({ slug }: { slug: string }) {
 
       {/* Deliverables */}
       <section id="deliverables" aria-labelledby="deliverables-title" className="section">
-        <div className="container-site">
-          <SectionHeading id="deliverables-title" eyebrow="Deliverables" title="What we deliver" />
-          {service.deliverables.map((group) => (
-            <div key={group.title ?? "main"} className="mt-12">
-              {group.title && <h3 className="eyebrow eyebrow-plain mb-4">{group.title}</h3>}
-              <dl className="grid border-t border-line md:grid-cols-2 md:gap-x-16">
-                {group.items.map((item) => (
-                  <div key={item.title} className="border-b border-line py-6">
-                    <dt className="text-title font-semibold">{item.title}</dt>
-                    <dd className="mt-2 text-fg-muted">{item.body}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          ))}
-
-          {service.catalogue.length > 0 && (
-            <div className="mt-14 grid gap-10 md:grid-cols-2">
-              {service.catalogue.map((cat) => (
-                <div key={cat.title}>
-                  <h3 className="eyebrow eyebrow-plain mb-4">{cat.title}</h3>
-                  <ul className="flex flex-wrap gap-2">
-                    {cat.items.map((item) => (
-                      <li key={item} className="rounded-xs border border-line px-3 py-1.5 text-small">
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
+        <div className="container-site grid gap-14 lg:grid-cols-12">
+          <div className="lg:col-span-4">
+            <div className="lg:sticky lg:top-[calc(var(--header-h)+2.5rem)]">
+              <SectionHeading id="deliverables-title" eyebrow="Deliverables" title="What we deliver" />
+              {service.catalogue.length > 0 && (
+                <div className="mt-10 space-y-8" data-reveal>
+                  {service.catalogue.map((cat) => (
+                    <div key={cat.title}>
+                      <h3 className="eyebrow eyebrow-plain mb-3">{cat.title}</h3>
+                      <ul className="flex flex-wrap gap-2">
+                        {cat.items.map((item) => (
+                          <li key={item} className="chip">
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              )}
             </div>
-          )}
+          </div>
+          <div className="lg:col-span-8">
+            {deliverableGroups.map((group) => (
+              <div key={group.title ?? "main"} className="mb-12 last:mb-0">
+                {group.title && <h3 className="eyebrow mb-5">{group.title}</h3>}
+                <dl className="border-t border-line">
+                  {group.items.map((item, idx) => {
+                    const number = group.offset + idx + 1;
+                    return (
+                      <div
+                        key={item.title}
+                        data-reveal
+                        className="group border-b border-line py-7 transition-colors duration-300 hover:bg-bg-raised sm:px-3"
+                      >
+                        <dt className="flex items-baseline gap-x-4 sm:gap-x-8">
+                          <span className="index-num w-8 shrink-0 text-[1.5rem] leading-none transition-transform duration-500 group-hover:translate-x-1 sm:w-16" aria-hidden="true">
+                            {String(number).padStart(2, "0")}
+                          </span>
+                          <span className="text-display-s font-medium text-brand">{item.title}</span>
+                        </dt>
+                        <dd className="mt-3 max-w-2xl pl-12 text-fg-muted sm:pl-24">{item.body}</dd>
+                      </div>
+                    );
+                  })}
+                </dl>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {showPackages && (
-        <section aria-labelledby="packages-title" className="surface-paper-2 section">
+        <section aria-labelledby="packages-title" className="surface-raised section border-y border-line">
           <div className="container-site">
             <div className="flex flex-wrap items-end justify-between gap-6">
               <SectionHeading id="packages-title" eyebrow="Logo design packages" title="Start with a logo." intro={packageIntro} />
@@ -163,10 +206,14 @@ export function ServicePage({ slug }: { slug: string }) {
       )}
 
       {/* Process */}
-      <section aria-labelledby="process-title" className={`section ${showPackages ? "" : "surface-paper-2"}`}>
-        <div className="container-site">
-          <SectionHeading id="process-title" eyebrow="Process" title="How the work runs" />
-          <div className="mt-12">
+      <section aria-labelledby="process-title" className={`section ${showPackages ? "" : "surface-raised border-y border-line"}`}>
+        <div className="container-site grid gap-14 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <div className="lg:sticky lg:top-[calc(var(--header-h)+2.5rem)]">
+              <SectionHeading id="process-title" eyebrow="Process" title="How the work runs" />
+            </div>
+          </div>
+          <div className="lg:col-span-7">
             <ProcessSteps steps={service.process} />
           </div>
         </div>
@@ -174,17 +221,18 @@ export function ServicePage({ slug }: { slug: string }) {
 
       {/* FAQ + insights */}
       <section aria-labelledby="faq-title" className="section">
-        <div className="container-site grid gap-12 lg:grid-cols-12">
+        <div className="container-site grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <SectionHeading id="faq-title" eyebrow="FAQ" title="Common questions" />
             {relatedInsights.length > 0 && (
-              <div className="mt-10">
-                <h3 className="eyebrow eyebrow-plain mb-3">Further reading</h3>
-                <ul className="space-y-3">
+              <div className="mt-12" data-reveal>
+                <h3 className="eyebrow eyebrow-plain mb-4">Further reading</h3>
+                <ul className="space-y-2">
                   {relatedInsights.map((insight) => (
                     <li key={insight.slug}>
-                      <Link href={`/${insight.slug}/`} className="link font-semibold">
-                        {insight.title}
+                      <Link href={`/${insight.slug}/`} className="group flex items-start gap-3 font-medium text-fg-muted transition-colors hover:text-brand">
+                        <ArrowRight aria-hidden="true" className="icon-arrow mt-1 size-4 shrink-0 text-accent" strokeWidth={1.75} />
+                        <span className="link-draw">{insight.title}</span>
                       </Link>
                     </li>
                   ))}
@@ -199,9 +247,9 @@ export function ServicePage({ slug }: { slug: string }) {
       </section>
 
       {/* Related */}
-      <section aria-labelledby="related-title" className="border-t border-line py-16 sm:py-20">
+      <section aria-labelledby="related-title" className="border-t border-line py-20 sm:py-24">
         <div className="container-site">
-          <h2 id="related-title" className="eyebrow mb-8">
+          <h2 id="related-title" className="eyebrow mb-10">
             Related services
           </h2>
           <RelatedServices slugs={service.related} />

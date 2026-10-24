@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
-import { AlertCircle, ArrowRight, CheckCircle2, LoaderCircle } from "lucide-react";
+import { AlertCircle, ArrowRight, LoaderCircle } from "lucide-react";
 import { INQUIRY_LIMITS, NOT_SURE, validateInquiry, type InquiryErrors, type InquiryField } from "@/lib/inquiry/validate";
 
 type Option = { value: string; label: string };
@@ -115,12 +115,16 @@ export function InquiryForm({ services, packages, phone, email, successHeadingLe
   if (status.state === "success") {
     const Heading = successHeadingLevel;
     return (
-      <div className="rounded-md border border-line bg-bg-raised p-6 sm:p-8" role="status">
-        <CheckCircle2 aria-hidden="true" className="size-8 text-ornament" strokeWidth={1.5} />
-        <Heading ref={successRef} tabIndex={-1} className="mt-4 font-display text-display-s outline-none">
+      <div className="motion-rise relative overflow-hidden rounded-[var(--radius-md)] border border-line bg-bg-raised p-7 sm:p-10" role="status">
+        <div aria-hidden="true" className="absolute -right-24 -top-24 size-72 rounded-full bg-[radial-gradient(circle,rgb(44_108_28/0.14),transparent_65%)]" />
+        <svg aria-hidden="true" viewBox="0 0 48 48" className="draw-check relative size-12 text-success" fill="none">
+          <circle cx="24" cy="24" r="22" stroke="currentColor" strokeOpacity="0.35" strokeWidth="1.5" />
+          <path d="M15 24.5l6 6 12-13" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <Heading ref={successRef} tabIndex={-1} className="relative mt-6 text-display-s outline-none">
           Thank you, {status.name}.
         </Heading>
-        <p className="mt-3 text-fg-muted">
+        <p className="relative mt-3 text-fg-muted">
           We&rsquo;ve received your message and will reply to <strong className="text-fg">{status.email}</strong>. If it&rsquo;s urgent, call us
           on{" "}
           <a href={phone.href} className="link tabular">
@@ -148,7 +152,7 @@ export function InquiryForm({ services, packages, phone, email, successHeadingLe
   return (
     <form ref={formRef} action="/api/contact/" method="post" onSubmit={onSubmit} aria-describedby={id("required-note")} className="relative">
       {errorEntries.length > 0 && (
-        <div ref={summaryRef} tabIndex={-1} role="alert" className="mb-6 rounded-sm border-2 border-danger bg-danger-bg p-4 text-[var(--aed-ink)] outline-none">
+        <div ref={summaryRef} tabIndex={-1} role="alert" className="alert-box mb-7 rounded-[var(--radius-sm)] border border-danger bg-danger-bg p-5 text-fg outline-none">
           <p className="font-semibold">
             {errorEntries.length === 1 ? "There is a problem with 1 field:" : `There are problems with ${errorEntries.length} fields:`}
           </p>
@@ -311,14 +315,14 @@ export function InquiryForm({ services, packages, phone, email, successHeadingLe
       </div>
 
       {status.state === "error" && (
-        <div role="alert" className="mt-6 flex gap-3 rounded-sm border-2 border-danger bg-danger-bg p-4 text-[var(--aed-ink)]">
+        <div role="alert" className="alert-box mt-7 flex gap-3 rounded-[var(--radius-sm)] border border-danger bg-danger-bg p-5 text-fg">
           <AlertCircle aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-danger" strokeWidth={2} />
           <p>{status.message}</p>
         </div>
       )}
 
       <div className="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <button type="submit" className="btn btn-primary" aria-disabled={status.state === "submitting"}>
+        <button type="submit" data-magnetic className="btn btn-primary" aria-disabled={status.state === "submitting"}>
           {status.state === "submitting" ? (
             <>
               <LoaderCircle aria-hidden="true" className="size-5 animate-spin" strokeWidth={2} />

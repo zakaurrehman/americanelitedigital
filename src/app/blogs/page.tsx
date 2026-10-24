@@ -18,7 +18,11 @@ export default function InsightsPage() {
       <PageHeader
         crumbs={[{ name: "Insights", path: "/blogs/" }]}
         eyebrow="Insights"
-        title="Insights"
+        title={
+          <>
+            Insights<span className="em-accent">.</span>
+          </>
+        }
         lead="Practical thinking on digital strategy, campaigns, websites and where marketing is heading."
       />
       <section aria-label="Articles" className="section">

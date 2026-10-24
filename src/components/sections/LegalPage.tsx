@@ -10,6 +10,7 @@ export function LegalPage({ doc, path }: { doc: LegalDocument; path: string }) {
   return (
     <>
       <PageHeader
+        tone="plain"
         crumbs={[{ name: doc.title, path }]}
         eyebrow="Legal"
         title={doc.title}
@@ -22,13 +23,19 @@ export function LegalPage({ doc, path }: { doc: LegalDocument; path: string }) {
       <div className="container-site section grid gap-12 lg:grid-cols-12">
         <nav aria-labelledby="toc-title" className="lg:col-span-4">
           <div className="lg:sticky lg:top-[calc(var(--header-h)+2rem)]">
-            <h2 id="toc-title" className="eyebrow eyebrow-plain mb-4">
+            <h2 id="toc-title" className="eyebrow eyebrow-plain mb-5">
               On this page
             </h2>
-            <ol className="space-y-1 border-l border-line">
-              {doc.sections.map((s) => (
+            <ol className="space-y-0.5 border-l border-line">
+              {doc.sections.map((s, i) => (
                 <li key={s.title}>
-                  <a href={`#${slugify(s.title)}`} className="-ml-px inline-flex min-h-10 items-center border-l border-transparent pl-4 hover:border-[var(--ornament)] hover:text-accent">
+                  <a
+                    href={`#${slugify(s.title)}`}
+                    className="-ml-px flex min-h-10 items-center gap-3 border-l border-transparent pl-5 text-fg-muted transition-colors hover:border-accent hover:text-brand"
+                  >
+                    <span className="index-num w-5 text-[0.95rem]" aria-hidden="true">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
                     {s.title}
                   </a>
                 </li>

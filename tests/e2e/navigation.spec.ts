@@ -24,7 +24,8 @@ test.describe("desktop navigation", () => {
     await page.goto("/");
     const trigger = page.getByRole("button", { name: "Services" });
     await trigger.click();
-    await page.locator("h1").click();
+    // Click a point well outside the (centred, wide) services panel.
+    await page.mouse.click(12, 700);
     await expect(trigger).toHaveAttribute("aria-expanded", "false");
 
     await trigger.click();

@@ -2,9 +2,12 @@ import type { NextConfig } from "next";
 
 // Security headers. The CSP allows inline scripts/styles because statically generated Next.js
 // pages inline their hydration data; no third-party script origins are allowed.
+// `next dev` only: React needs eval() for its debugging features (it never uses eval in production),
+// so 'unsafe-eval' is added for the development server and never shipped.
+const isDev = process.env.NODE_ENV === "development";
 const contentSecurityPolicy = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self'",

@@ -29,9 +29,15 @@ test.describe("every page", () => {
       }
 
       // Images: dimensions reserved (no CLS) and alt attribute present (empty only when decorative).
+      // `fill` images have no width attribute; their space is reserved by a parent with an explicit aspect ratio.
       for (const img of await page.locator("img").all()) {
         expect(await img.getAttribute("alt")).not.toBeNull();
-        expect(await img.getAttribute("width")).not.toBeNull();
+        if ((await img.getAttribute("data-nimg")) === "fill") {
+          const parentRatio = await img.evaluate((el) => getComputedStyle(el.parentElement!).aspectRatio);
+          expect(parentRatio, "fill image needs a parent with an aspect ratio").not.toBe("auto");
+        } else {
+          expect(await img.getAttribute("width")).not.toBeNull();
+        }
       }
     });
   }

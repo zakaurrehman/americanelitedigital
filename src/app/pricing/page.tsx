@@ -63,7 +63,7 @@ export default function PricingPage() {
           <PackageGuarantees />
         </div>
       </section>
-      <section aria-label="Package comparison" className="surface-paper-2 section">
+      <section aria-label="Package comparison" className="surface-raised section">
         <div className="container-site">
           <PackageComparison />
           <p className="mt-6 text-small text-fg-muted">

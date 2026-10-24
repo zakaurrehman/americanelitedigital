@@ -44,8 +44,10 @@ All copy and business facts live in `src/content/`, typed, with articles as Mark
 | `docs/audit/performance-baseline.md` | Lighthouse baseline of the old site |
 | `docs/audit/seo-audit.md` | SEO findings, redirect map, metadata as built |
 | `docs/audit/redesign-roadmap.md` | Priorities, service hierarchy, owner blockers, post-launch plan |
-| `docs/design/design-direction.md` | Three directions considered and why "American Editorial" was chosen |
-| `docs/design/design-system.md` | Tokens, type, layout, components, motion |
-| `docs/architecture.md` | Code structure, data flow, feature switches, security, limitations |
+| `docs/design/design-direction.md` | v3 "American Elite" (light, from the logo) direction with v2→v3 screenshots; v2 and v1 records |
+| `docs/design/image-credits.md` | Logo asset derivation, photo sources (Unsplash IDs), licence and selection rules |
+| `docs/design/component-selection.md` | 21st.dev components inspected, what was adapted or rejected, and why no animation library |
+| `docs/design/design-system.md` | Tokens with verified contrast, type, layout, components, motion system |
+| `docs/architecture.md` | Code structure, data flow, motion runtime, feature switches, security, limitations |
 | `docs/deployment.md` | Go-live checklist, Vercel / Hostinger steps, rollback |
-| `docs/testing/verification-report.md` | Test results and before/after performance |
+| `docs/testing/verification-report.md` | v3 results and performance investigation; v2 and v1 reports |

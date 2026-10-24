@@ -5,14 +5,15 @@
 | Concern | Choice | Why |
 |---|---|---|
 | Framework | **Next.js 16.4.2** (App Router), React 19.3, TypeScript 5.9 (strict, `noUncheckedIndexedAccess`) | Matches the owner's other projects. Every page is pre-rendered at build time; one small API route. 16.4.2 patches a critical image-optimiser RCE in 16.0–16.4.0. |
-| Styling | **Tailwind CSS 4.3**, with tokens in `src/app/globals.css` | Utility classes on top of semantic design tokens; a handful of shared component classes (`.btn`, `.field-input`, `.prose-editorial`). |
-| Fonts | `next/font/google`, self-hosted at build time | No requests to third-party font services at runtime. |
+| Styling | **Tailwind CSS 4.3**, with tokens in `src/app/globals.css` | Utility classes on top of semantic design tokens; shared component classes (`.btn`, `.card`, `.spot`, `.field-input`, `.prose-editorial`) and the motion system (keyframes, reveal rules, scroll-driven animations). See `docs/design/design-system.md`. |
+| Fonts | `next/font/google` (Geist, Instrument Serif italic), self-hosted at build time | No requests to third-party font services at runtime. |
+| Motion | CSS plus one small client component (`MotionRuntime`, ~1 KB gzipped) | No animation library. See "Motion runtime" below. |
 | Icons | `lucide-react` | One consistent SVG family, tree-shaken. |
 | Markdown | `react-markdown` (server-rendered only) | Articles stay editable as Markdown and ship no client JavaScript. |
 | Email | `nodemailer` (server only) | SMTP through the existing mailbox, so no new vendor. |
 | Tests | Vitest 5 (unit), Playwright 1.63 + axe-core (e2e and accessibility) | — |
 
-There is no database, CMS, state library, animation library or UI kit. Native `<details>` and `<dialog>` replace accordion and modal libraries. The site's own client JavaScript is three small islands: `HeaderNav`, `InquiryForm` and `RevealOnScroll`.
+There is no database, CMS, state library, animation library or UI kit. Native `<details>` and `<dialog>` replace accordion and modal libraries. The site's own client JavaScript is four small islands: `HeaderNav`, `InquiryForm`, `MotionRuntime` and the route `template.tsx`. v2 added no dependencies.
 
 ## Directory map
 
@@ -29,13 +30,17 @@ src/
     api/contact/route.ts       Inquiry endpoint (Node runtime)
     feed/route.ts              RSS 2.0 at /feed/
     sitemap.ts robots.ts not-found.tsx layout.tsx globals.css icon.png apple-icon.png
+    template.tsx               Client; adds the page-enter animation on client navigations only
   components/
-    layout/                    SiteHeader, HeaderNav (client), SiteFooter, BrandMark, RevealOnScroll (client)
+    layout/                    SiteHeader, HeaderNav (client), SiteFooter, BrandMark
+    motion/                    MotionRuntime (client): reveals, spotlight, magnetic, tilt, has-interacted
+    home/                      HeroVisual (hero photo collage), Marquee (service band)
     sections/                  Page sections and templates (ServicePage, LegalPage, PageHeader, …)
     inquiry/                   InquirySection (server), InquiryForm (client)
-    ui/                        ButtonLink, SectionHeading, Breadcrumbs, JsonLd, Ornament
+    ui/                        ButtonLink, SectionHeading, Breadcrumbs, JsonLd, Ornament (GlowRule)
   content/                     All copy and business facts, typed — edit here, not in components
     site.ts services.ts company.ts packages.ts projects.ts insights.ts legal.ts navigation.ts
+    media.ts                   Photo registry (static imports, alt text); sources in docs/design/image-credits.md
     insights/*.md              Article bodies
   lib/
     seo.ts                     Per-page metadata helper (canonical, Open Graph, Twitter)
@@ -45,12 +50,14 @@ src/
     inquiry/rate-limit.ts      In-memory fixed-window limiter
     inquiry/deliver.ts         SMTP and webhook delivery (server-only)
   instrumentation.ts           Logs a startup error if production has no delivery channel
-public/brand/                  Original logo, crest crop
+public/brand/                  Logo assets derived from the owner's artwork (lockups, emblem)
+public/images/photos/          Licensed Unsplash photography (see docs/design/image-credits.md)
 public/images/insights/        Article images (resized from the WordPress originals)
 public/og/default.png          Branded social card
 tests/unit/                    Vitest
 tests/e2e/                     Playwright (+ support/webhook-sink.mjs, support/routes.ts)
 scripts/test-preview.mjs       Builds with unpublished features to .next-preview/ and tests them
+scripts/axe-timing.mjs         Diagnostic, not part of the suite: times axe rule groups on one page
 ```
 
 ## Rendering and data flow
@@ -63,6 +70,30 @@ scripts/test-preview.mjs       Builds with unpublished features to .next-preview
   3. The route runs, in order: same-origin check, 16 KB body limit, honeypot (silently dropped), timing check (flags submissions under 2 s, doesn't drop them), per-IP rate limit (5 per 10 minutes), and server validation with the same module the browser used.
   4. It delivers via SMTP and/or webhook (`Promise.allSettled`). The inquiry counts as delivered if any channel succeeds; otherwise the visitor gets a 503 with the phone number and email.
   5. Without JavaScript, the same route accepts a form POST and redirects to `/contact-us/thank-you/`, or returns a minimal error page.
+
+## Motion runtime
+
+Server components opt in to motion with data attributes, so they stay server components. `MotionRuntime`, mounted once in `layout.tsx`, is the only script that reads them.
+
+| Attribute / class | Effect |
+|---|---|
+| `data-reveal[="fade"\|"scale"\|"mask"]` | Reveal-once. Stagger with `style={{ "--i": n }}`. |
+| `data-spotlight` + `.spot` children | Shared cursor light |
+| `data-magnetic` | Element drifts toward the pointer |
+| `data-tilt` | Exposes `--tilt-x` / `--tilt-y` |
+| `html.has-interacted` | Set on the first pointer move, scroll, key or touch; starts the homepage hero drift |
+
+How the runtime behaves:
+
+- **Reveals are scanned on every route change** (the effect depends on `pathname`).
+  - The first pass runs in its own animation frame and reads every position before writing any class (one layout).
+  - Elements already above the 90% line are marked `.is-revealed` at once. Only those below it get `.is-pending`, the only class the CSS hides.
+  - A passive scroll and resize sweep (one per frame) reveals the rest, and detaches when nothing is pending.
+- **Pointer effects** share one `pointermove` listener and one write pass per frame, for mouse and pen only.
+- **Failure-safe by construction.** Without JavaScript, nothing is `.is-pending`, so nothing is hidden. Headline masks and entrances are pure CSS. Under reduced motion the runtime does nothing.
+- **Page transitions:** `template.tsx` remounts on each navigation. A module-level flag skips the first mount, so the entrance animation never delays the initial paint or LCP.
+
+Scroll-linked effects (ticker, process beam, statement sweep, parallax, reading progress, header) are pure CSS `animation-timeline`. They sit behind `@supports`, so browsers without scroll timelines show the static design.
 
 ## Feature switches
 
@@ -79,6 +110,7 @@ scripts/test-preview.mjs       Builds with unpublished features to .next-preview
 |---|---|
 | Change copy | Edit the relevant file in `src/content/`. Types catch missing fields. |
 | Add an article | Add `src/content/insights/<slug>.md` (no `#` H1; start with the intro paragraph), add an entry to `insights.ts` with an image in `public/images/insights/`, and optionally reference the slug from a service's `insights` list. The route, sitemap, RSS and JSON-LD update automatically. |
+| Change a photo | Add the image to `public/images/photos/`, register it with descriptive alt text in `src/content/media.ts`, and point `pillarPhotos`, `servicePhotos` or a page at it. Record the source in `docs/design/image-credits.md`. Prefer real photos of the team and delivered work over stock. |
 | Add a case study | Add a `Project` to `projects` in `src/content/projects.ts` with `clientApproved: true`, plus an image in `public/`. Only add measured, client-approved results. |
 | Publish packages | Confirm prices and guarantees, set `PACKAGES_PUBLISHED = true`, and update the price assertion in `tests/unit/content.test.ts` if prices change. |
 | Bring back a sister site | Set `live: true` in `src/content/site.ts`. |

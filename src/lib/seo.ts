@@ -18,7 +18,7 @@ export function absoluteUrl(path: string): string {
   return `${SITE_URL}${path}`;
 }
 
-const DEFAULT_IMAGE = { url: "/og/default.png", width: 1200, height: 630, alt: `${site.name} — Brand, website and software, built by one accountable team.` };
+const DEFAULT_IMAGE = { url: "/og/default.png", width: 1200, height: 630, alt: `${site.name} — Brand. Web. Software. One team.` };
 
 export function pageMetadata({ title, description, path, type = "website", image = DEFAULT_IMAGE, publishedTime, modifiedTime, noindex }: PageMeta): Metadata {
   const images = [image];
