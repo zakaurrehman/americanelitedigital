@@ -110,9 +110,9 @@ export function HeroVisual() {
             <defs>
               <path id="hero-badge-path" d="M60,60 m-47,0 a47,47 0 1,1 94,0 a47,47 0 1,1 -94,0" />
             </defs>
-            <text fontSize="9" fontWeight="700" fill="var(--navy-800)">
+            <text fontSize="9.5" fontWeight="700" fill="var(--navy-800)">
               <textPath href="#hero-badge-path" textLength="290" lengthAdjust="spacing">
-                AMERICAN ELITE ★ DIGITAL ★ LOS ANGELES ★
+                AMERICAN ELITE DIGITAL <tspan fill="var(--red-500)">★ ★ ★ ★ ★</tspan>
               </textPath>
             </text>
           </svg>

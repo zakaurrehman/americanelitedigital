@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Lightbulb } from "lucide-react";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { PageHeader } from "@/components/sections/PageHeader";
 import { ServiceIndex } from "@/components/sections/ServiceIndex";
 import { ArrowLink } from "@/components/ui/ButtonLink";
+import { valueIcons } from "@/components/ui/icons";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { about } from "@/content/company";
 import { liveNetworkSites, site } from "@/content/site";
@@ -18,6 +19,11 @@ export const metadata: Metadata = pageMetadata({
     "Meet American Elite Digital: a Los Angeles team of digital strategists, designers and developers. Our goal, mission, values and the way we work.",
   path: "/about-us/",
 });
+
+function ValueIcon({ index }: { index: number }) {
+  const Icon = valueIcons[index] ?? Lightbulb;
+  return <Icon className="size-5" strokeWidth={1.75} />;
+}
 
 export default function AboutPage() {
   return (
@@ -64,8 +70,8 @@ export default function AboutPage() {
                 style={{ "--i": i } as React.CSSProperties}
                 className={`card spot lift flex flex-col gap-10 p-7 sm:p-8 ${i < 2 ? "md:col-span-3" : "md:col-span-2"}`}
               >
-                <span className="index-num text-[2.25rem] leading-none" aria-hidden="true">
-                  {String(i + 1).padStart(2, "0")}
+                <span className="icon-tile" aria-hidden="true">
+                  <ValueIcon index={i} />
                 </span>
                 <div>
                   <h3 className="text-title font-semibold">{value.title}</h3>

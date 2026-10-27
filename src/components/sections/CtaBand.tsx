@@ -20,7 +20,7 @@ export function CtaBand({ title = "Have a project in mind?", text = offer.long }
           <p className="mx-auto mt-6 max-w-xl text-lead text-fg-muted">{text}</p>
           <div className="mt-10 flex flex-wrap justify-center gap-3">
             <ButtonLink href="/contact-us/" arrow magnetic>
-              Start a project
+              Get a free consultation
             </ButtonLink>
             <a href={site.phone.href} className="btn btn-secondary tabular">
               Call {site.phone.display}

@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { CheckCircle2 } from "lucide-react";
 import { InquirySection } from "@/components/inquiry/InquirySection";
 import { PageHeader } from "@/components/sections/PageHeader";
 import { ProcessSteps } from "@/components/sections/ProcessSteps";
 import { ButtonLink } from "@/components/ui/ButtonLink";
+import { differentiatorIcons } from "@/components/ui/icons";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { differentiators, processSteps } from "@/content/company";
 import { photos } from "@/content/media";
@@ -14,6 +16,11 @@ export const metadata: Metadata = pageMetadata({
     "Expertise and innovation, tailored strategies, a results-driven approach, a true partnership and one accountable team for brand, web, apps and marketing.",
   path: "/why-choose-us/",
 });
+
+function DifferentiatorIcon({ index }: { index: number }) {
+  const Icon = differentiatorIcons[index] ?? CheckCircle2;
+  return <Icon className="size-7" strokeWidth={1.5} />;
+}
 
 export default function WhyChooseUsPage() {
   return (
@@ -30,7 +37,7 @@ export default function WhyChooseUsPage() {
         image={photos.pairReview}
         actions={
           <ButtonLink href="#inquiry" arrow magnetic>
-            Start a project
+            Get a free consultation
           </ButtonLink>
         }
       />
@@ -44,9 +51,12 @@ export default function WhyChooseUsPage() {
                 data-reveal
                 className="group grid gap-5 border-b border-line py-12 transition-colors duration-500 hover:bg-bg-raised md:grid-cols-12 md:gap-8 md:px-4 md:py-16"
               >
-                <p className="index-num text-[clamp(3rem,6vw,5.5rem)] leading-[0.85] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1 md:col-span-2" aria-hidden="true">
-                  {String(i + 1).padStart(2, "0")}
-                </p>
+                <span
+                  className="icon-tile size-16 rounded-[18px] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1 md:col-span-2"
+                  aria-hidden="true"
+                >
+                  <DifferentiatorIcon index={i} />
+                </span>
                 <h2 className="text-display-m md:col-span-4">{item.title}</h2>
                 <p className="text-lead text-fg-muted md:col-span-6 md:pt-2">{item.body}</p>
               </li>

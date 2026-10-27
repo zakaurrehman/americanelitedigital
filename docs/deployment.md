@@ -22,6 +22,28 @@ The site is a standard Next.js server build and runs anywhere Node.js 20.9+ runs
 4. Add the domain `americanelitedigital.com` (and `www`, redirecting to the apex) in Vercel, then update DNS at the registrar or Hostinger as Vercel instructs (apex A record / `www` CNAME).
 5. Vercel issues TLS automatically. HSTS is already sent by the app.
 
+### Contact form email on Vercel, step by step
+
+Without these variables the live form can't deliver: visitors see an error that gives them the phone number and email instead (by design, so no inquiry is silently lost).
+
+1. Vercel → the project → **Settings → Environment Variables**.
+2. Add each variable below for **Production** (and Preview, if previews should send email too):
+
+   | Name | Value |
+   |---|---|
+   | `SMTP_HOST` | `smtp.hostinger.com` |
+   | `SMTP_PORT` | `465` |
+   | `SMTP_SECURE` | `true` |
+   | `SMTP_USER` | the full mailbox address, e.g. `info@americanelitedigital.com` |
+   | `SMTP_PASS` | that mailbox's password (mark it **Sensitive**) |
+   | `CONTACT_TO_EMAIL` | where inquiries should arrive |
+   | `CONTACT_FROM_EMAIL` | `American Elite Digital <info@americanelitedigital.com>` (must be the SMTP mailbox or an alias of it) |
+   | `NEXT_PUBLIC_SITE_URL` | `https://americanelitedigital.com` once the domain is connected |
+
+3. **Redeploy** (Deployments → latest → Redeploy). Variables only apply to new deployments.
+4. Send one real inquiry from the live contact form and confirm it arrives, including in the spam folder. Reply to it to check that Reply-To is the visitor.
+5. If it fails, open Vercel → Logs and look for `[inquiry]` lines. They name the failing channel and never print secrets or the visitor's details.
+
 Notes: the in-memory rate limiter is per serverless instance. Use the Hobby plan only if it suits your commercial use; Vercel's terms require Pro for commercial sites.
 
 ## Option B — Hostinger (plan with Node.js web apps)

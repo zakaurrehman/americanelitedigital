@@ -32,14 +32,14 @@ src/
     sitemap.ts robots.ts not-found.tsx layout.tsx globals.css icon.png apple-icon.png
     template.tsx               Client; adds the page-enter animation on client navigations only
   components/
-    layout/                    SiteHeader, HeaderNav (client), SiteFooter, BrandMark
+    layout/                    SiteHeader, HeaderNav (client), SiteFooter, BrandMark, MobileCtaBar (phones only)
     motion/                    MotionRuntime (client): reveals, spotlight, magnetic, tilt, has-interacted
     home/                      HeroVisual (hero photo collage), Marquee (service band)
-    sections/                  Page sections and templates (ServicePage, LegalPage, PageHeader, …)
+    sections/                  Page sections and templates (ServicePage, ServicePackages, Testimonials, LegalPage, PageHeader, …)
     inquiry/                   InquirySection (server), InquiryForm (client)
-    ui/                        ButtonLink, SectionHeading, Breadcrumbs, JsonLd, Ornament (GlowRule)
+    ui/                        ButtonLink, SectionHeading, Breadcrumbs, JsonLd, Ornament (GlowRule), icons (pillar/value icons)
   content/                     All copy and business facts, typed — edit here, not in components
-    site.ts services.ts company.ts packages.ts projects.ts insights.ts legal.ts navigation.ts
+    site.ts services.ts company.ts packages.ts projects.ts testimonials.ts insights.ts legal.ts navigation.ts
     media.ts                   Photo registry (static imports, alt text); sources in docs/design/image-credits.md
     insights/*.md              Article bodies
   lib/
@@ -102,7 +102,8 @@ Scroll-linked effects (ticker, process beam, statement sweep, parallax, reading 
 | `PACKAGES_PUBLISHED` | `src/content/packages.ts` | `false` (owner decision, 2026-10-23). When `true`: `/pricing/`, the package sections on the homepage and branding page, the nav link, the package select in the form, and the OfferCatalog JSON-LD all appear. |
 | `SHOW_PACKAGES=true` | env, preview only | The same, without editing code. Used by `npm run test:preview`. |
 | `projects` array | `src/content/projects.ts` | Adding one real, client-approved project turns on `/work/`, the homepage "Selected work" section, the nav link and the sitemap entry. |
-| `PREVIEW_PLACEHOLDER_WORK=true` | env, preview only | Renders three clearly labelled placeholder case studies, always `noindex` and never in the sitemap. **Never set it in production.** |
+| `testimonials` array | `src/content/testimonials.ts` | Adding one real, client-approved quote turns on the homepage "What our clients say" section. No star ratings and no Review schema. |
+| `PREVIEW_PLACEHOLDER_WORK=true` | env, preview only | Renders three clearly labelled placeholder case studies (always `noindex`, never in the sitemap) and three placeholder testimonials. **Never set it in production.** |
 
 ## Editing content
 
@@ -111,6 +112,7 @@ Scroll-linked effects (ticker, process beam, statement sweep, parallax, reading 
 | Change copy | Edit the relevant file in `src/content/`. Types catch missing fields. |
 | Add an article | Add `src/content/insights/<slug>.md` (no `#` H1; start with the intro paragraph), add an entry to `insights.ts` with an image in `public/images/insights/`, and optionally reference the slug from a service's `insights` list. The route, sitemap, RSS and JSON-LD update automatically. |
 | Change a photo | Add the image to `public/images/photos/`, register it with descriptive alt text in `src/content/media.ts`, and point `pillarPhotos`, `servicePhotos` or a page at it. Record the source in `docs/design/image-credits.md`. Prefer real photos of the team and delivered work over stock. |
+| Add a testimonial | Add a `Testimonial` to `testimonials` in `src/content/testimonials.ts` with `clientApproved: true`. Use the client's own words and the name and role they agreed to show. |
 | Add a case study | Add a `Project` to `projects` in `src/content/projects.ts` with `clientApproved: true`, plus an image in `public/`. Only add measured, client-approved results. |
 | Publish packages | Confirm prices and guarantees, set `PACKAGES_PUBLISHED = true`, and update the price assertion in `tests/unit/content.test.ts` if prices change. |
 | Bring back a sister site | Set `live: true` in `src/content/site.ts`. |

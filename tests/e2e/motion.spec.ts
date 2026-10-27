@@ -49,7 +49,7 @@ test("hero headline is readable immediately and the hero has a primary call to a
   await page.goto("/");
   const h1 = page.locator("h1");
   await expect(h1).toHaveText("Brand. Web. Software. One team.");
-  await expect(page.getByRole("link", { name: "Start a project" }).first()).toBeVisible();
+  await expect(page.getByRole("link", { name: "Get a free consultation" }).first()).toBeVisible();
   // The H1 is never faded (opacity animations would delay the largest paint).
   expect(Number(await h1.evaluate((n) => getComputedStyle(n).opacity))).toBe(1);
 });

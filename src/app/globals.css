@@ -1248,6 +1248,21 @@
   }
 }
 
+/* Mobile call-to-action bar (MobileCtaBar): reserve room so it never covers the footer, keep it
+   clear of the home indicator, and get out of the way of the on-screen keyboard. */
+.mobile-cta {
+  padding-bottom: env(safe-area-inset-bottom);
+  box-shadow: 0 -8px 24px rgb(6 18 58 / 0.08);
+}
+body:has(:is(input, textarea, select):focus) .mobile-cta {
+  display: none;
+}
+@media (max-width: 47.999rem) {
+  body {
+    padding-bottom: calc(4.75rem + env(safe-area-inset-bottom));
+  }
+}
+
 @media print {
   .no-print {
     display: none !important;

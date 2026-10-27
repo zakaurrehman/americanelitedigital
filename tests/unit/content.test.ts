@@ -7,6 +7,7 @@ import { designPackages, PACKAGES_PUBLISHED } from "@/content/packages";
 import { projects, visibleProjects } from "@/content/projects";
 import { pillars, services } from "@/content/services";
 import { networkSites, site } from "@/content/site";
+import { testimonials, visibleTestimonials } from "@/content/testimonials";
 import { articleSchema, faqSchema, organizationSchema, serviceSchema } from "@/lib/structured-data";
 
 const appDir = path.join(process.cwd(), "src", "app");
@@ -62,6 +63,17 @@ describe("content integrity", () => {
     expect(visibleProjects()).toEqual(projects);
     process.env.PREVIEW_PLACEHOLDER_WORK = "true";
     expect(visibleProjects().every((p) => p.placeholder) || projects.length > 0).toBe(true);
+    if (previous === undefined) delete process.env.PREVIEW_PLACEHOLDER_WORK;
+    else process.env.PREVIEW_PLACEHOLDER_WORK = previous;
+  });
+
+  it("has no invented testimonials, and never shows placeholders unless explicitly previewing", () => {
+    expect(testimonials.every((t) => t.clientApproved && !t.placeholder && t.quote.trim() && t.name.trim())).toBe(true);
+    const previous = process.env.PREVIEW_PLACEHOLDER_WORK;
+    delete process.env.PREVIEW_PLACEHOLDER_WORK;
+    expect(visibleTestimonials()).toEqual(testimonials);
+    process.env.PREVIEW_PLACEHOLDER_WORK = "true";
+    expect(visibleTestimonials().every((t) => t.placeholder) || testimonials.length > 0).toBe(true);
     if (previous === undefined) delete process.env.PREVIEW_PLACEHOLDER_WORK;
     else process.env.PREVIEW_PLACEHOLDER_WORK = previous;
   });

@@ -30,7 +30,7 @@ test.describe("inquiry form", () => {
   test("shows an error summary and inline errors for missing fields", async ({ page }) => {
     await useClientIp(page, "10.0.0.1");
     await page.goto("/contact-us/");
-    await page.getByRole("button", { name: "Send inquiry" }).click();
+    await page.getByRole("button", { name: "Request free consultation" }).click();
 
     const summary = page.getByRole("alert").filter({ hasText: "There are problems with 3 fields" });
     await expect(summary).toBeVisible();
@@ -53,7 +53,7 @@ test.describe("inquiry form", () => {
     await useClientIp(page, "10.0.0.2");
     await page.goto("/contact-us/");
     await fill(page, { name: "Jordan Lee", email: "jordan@", phone: "310 555 0100" });
-    await page.getByRole("button", { name: "Send inquiry" }).click();
+    await page.getByRole("button", { name: "Request free consultation" }).click();
     await expect(page.getByText("Enter an email address in the format name@example.com.").first()).toBeVisible();
   });
 
@@ -64,7 +64,7 @@ test.describe("inquiry form", () => {
     // Service pages pre-select their own service.
     await expect(page.locator("#inquiry form").getByLabel("What do you need help with?")).toHaveValue("web-development-consulting-services");
     await fill(page, { name: "Jordan Lee", email, phone: "(310) 555-0100", message: "We need a new website by spring." });
-    await page.getByRole("button", { name: "Send inquiry" }).click();
+    await page.getByRole("button", { name: "Request free consultation" }).click();
 
     await expect(page.getByRole("heading", { name: "Thank you, Jordan." })).toBeFocused();
     const [hit] = await received(request, email);
@@ -89,7 +89,7 @@ test.describe("inquiry form", () => {
     await useClientIp(page, "10.0.0.4");
     await page.goto("/contact-us/");
     await fill(page, { name: "FAIL-WEBHOOK Test", email: `fail-${Date.now()}@example.com`, phone: "310 555 0100" });
-    await page.getByRole("button", { name: "Send inquiry" }).click();
+    await page.getByRole("button", { name: "Request free consultation" }).click();
     const alert = page.getByRole("alert").filter({ hasText: "couldn't send your message" });
     await expect(alert).toBeVisible();
     await expect(alert).toContainText("(310) 766-6600");

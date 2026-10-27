@@ -330,7 +330,7 @@ export function InquiryForm({ services, packages, phone, email, successHeadingLe
             </>
           ) : (
             <>
-              Send inquiry
+              Request free consultation
               <ArrowRight aria-hidden="true" className="icon-arrow size-[1.125em]" strokeWidth={1.75} />
             </>
           )}

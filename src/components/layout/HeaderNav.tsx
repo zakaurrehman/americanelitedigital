@@ -4,9 +4,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { ArrowUpRight, ChevronDown, Mail, Phone, X } from "lucide-react";
+import { pillarIcons } from "@/components/ui/icons";
+import type { PillarId } from "@/content/services";
 
 type NavItem = { label: string; href: string };
-export type ServiceNavItem = NavItem & { summary: string; pillar: string };
+export type ServiceNavItem = NavItem & { summary: string; pillar: PillarId };
+
+function PillarIcon({ pillar, className }: { pillar: PillarId; className: string }) {
+  const Icon = pillarIcons[pillar];
+  return <Icon aria-hidden="true" className={className} strokeWidth={1.75} />;
+}
 
 type Props = {
   services: ServiceNavItem[];
@@ -180,8 +187,8 @@ export function HeaderNav({ services, links, phone, email }: Props) {
                         aria-current={isActive(pathname, service.href) ? "page" : undefined}
                         className="spot group block rounded-[var(--radius-md)] px-4 py-3 transition-colors hover:bg-bg-hover aria-[current=page]:bg-bg-hover"
                       >
-                        <span className="flex items-baseline gap-3">
-                          <span className="index-num w-6 shrink-0 text-[1.05rem]">{service.pillar}</span>
+                        <span className="flex items-center gap-3">
+                          <PillarIcon pillar={service.pillar} className="size-6 shrink-0 text-gold-ink" />
                           <span className="font-semibold text-brand">{service.label}</span>
                         </span>
                         <span className="mt-0.5 block pl-9 text-small text-fg-subtle">{service.summary}</span>
@@ -211,7 +218,7 @@ export function HeaderNav({ services, links, phone, email }: Props) {
 
       <div className="flex items-center gap-2 sm:gap-3">
         <Link href="/contact-us/" data-magnetic className="btn btn-primary btn-sm hidden sm:inline-flex">
-          Start a project
+          Free consultation
         </Link>
         <button
           ref={menuButtonRef}
@@ -274,8 +281,8 @@ export function HeaderNav({ services, links, phone, email }: Props) {
                     aria-current={isActive(pathname, service.href) ? "page" : undefined}
                     className="flex min-h-12 items-center justify-between gap-4 py-1.5 text-[1.0625rem] text-fg-muted aria-[current=page]:text-fg"
                   >
-                    <span className="flex items-baseline gap-3">
-                      <span className="index-num w-5 text-[0.95rem]">{service.pillar}</span>
+                    <span className="flex items-center gap-3">
+                      <PillarIcon pillar={service.pillar} className="size-5 shrink-0 text-gold-ink" />
                       {service.label}
                     </span>
                     <ArrowUpRight aria-hidden="true" className="size-4 shrink-0 text-accent" strokeWidth={1.75} />
@@ -296,7 +303,7 @@ export function HeaderNav({ services, links, phone, email }: Props) {
           </nav>
           <div className="container-site relative shrink-0 border-t border-line py-6">
             <Link href="/contact-us/" onClick={closeMenu} className="btn btn-primary w-full">
-              Start a project
+              Get a free consultation
             </Link>
             <div className="mt-4 flex flex-col gap-1 text-fg-muted">
               <a href={phone.href} className="inline-flex min-h-11 items-center gap-2 tabular">

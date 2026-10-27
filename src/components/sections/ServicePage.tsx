@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, BadgeCheck, Check, CircleAlert } from "lucide-react";
 import { InquirySection } from "@/components/inquiry/InquirySection";
 import { FaqList } from "@/components/sections/FaqList";
 import { PageHeader } from "@/components/sections/PageHeader";
@@ -29,11 +29,6 @@ export function ServicePage({ slug }: { slug: string }) {
   const pillar = getPillar(service.pillar);
   const showPackages = slug === "branding-and-design-consulting-services" && packagesEnabled();
   const relatedInsights = service.insights.map(getInsight).filter((i) => i !== undefined);
-  // Deliverables are numbered continuously across groups.
-  const deliverableGroups = service.deliverables.map((group, gi) => ({
-    ...group,
-    offset: service.deliverables.slice(0, gi).reduce((n, g) => n + g.items.length, 0),
-  }));
 
   return (
     <>
@@ -42,14 +37,14 @@ export function ServicePage({ slug }: { slug: string }) {
           { name: "Services", path: "/services/" },
           { name: service.name, path: `/${slug}/` },
         ]}
-        eyebrow={`${pillar.number} — ${pillar.name}`}
+        eyebrow={pillar.name}
         title={service.h1}
         lead={service.headline}
         image={servicePhotos[slug]}
         actions={
           <>
             <ButtonLink href="#inquiry" arrow magnetic>
-              Start a project
+              Get a free consultation
             </ButtonLink>
             <a href={site.phone.href} className="btn btn-secondary tabular">
               Call {site.phone.display}
@@ -97,9 +92,9 @@ export function ServicePage({ slug }: { slug: string }) {
             </h2>
             <ul data-spotlight className="mt-10 grid gap-3">
               {service.problems.map((problem, i) => (
-                <li key={problem.title} data-reveal style={{ "--i": i } as React.CSSProperties} className="card spot grid gap-3 p-6 sm:grid-cols-[3.5rem_1fr] sm:p-8">
-                  <span className="index-num text-[2rem] leading-none" aria-hidden="true">
-                    {String(i + 1).padStart(2, "0")}
+                <li key={problem.title} data-reveal style={{ "--i": i } as React.CSSProperties} className="card spot grid gap-4 p-6 sm:grid-cols-[3rem_1fr] sm:p-8">
+                  <span className="icon-tile bg-[var(--accent-soft)] text-accent-strong" aria-hidden="true">
+                    <CircleAlert className="size-5" strokeWidth={1.75} />
                   </span>
                   <div>
                     <h3 className="text-title font-semibold">{problem.title}</h3>
@@ -124,8 +119,8 @@ export function ServicePage({ slug }: { slug: string }) {
                 style={{ "--i": i } as React.CSSProperties}
                 className={`card spot lift flex flex-col justify-between gap-10 p-7 sm:p-9 ${i === 0 ? "surface-navy border-transparent md:col-span-6 lg:col-span-3 lg:row-span-2" : "md:col-span-3"}`}
               >
-                <span className="index-num text-[2.5rem] leading-none" aria-hidden="true">
-                  {String(i + 1).padStart(2, "0")}
+                <span className="icon-tile" aria-hidden="true">
+                  <BadgeCheck className="size-5" strokeWidth={1.75} />
                 </span>
                 <div>
                   <h3 className={i === 0 ? "text-display-s" : "text-title font-semibold"}>{o.title}</h3>
@@ -162,28 +157,24 @@ export function ServicePage({ slug }: { slug: string }) {
             </div>
           </div>
           <div className="lg:col-span-8">
-            {deliverableGroups.map((group) => (
+            {service.deliverables.map((group) => (
               <div key={group.title ?? "main"} className="mb-12 last:mb-0">
                 {group.title && <h3 className="eyebrow mb-5">{group.title}</h3>}
                 <dl className="border-t border-line">
-                  {group.items.map((item, idx) => {
-                    const number = group.offset + idx + 1;
-                    return (
-                      <div
-                        key={item.title}
-                        data-reveal
-                        className="group border-b border-line py-7 transition-colors duration-300 hover:bg-bg-raised sm:px-3"
-                      >
-                        <dt className="flex items-baseline gap-x-4 sm:gap-x-8">
-                          <span className="index-num w-8 shrink-0 text-[1.5rem] leading-none transition-transform duration-500 group-hover:translate-x-1 sm:w-16" aria-hidden="true">
-                            {String(number).padStart(2, "0")}
-                          </span>
-                          <span className="text-display-s font-medium text-brand">{item.title}</span>
-                        </dt>
-                        <dd className="mt-3 max-w-2xl pl-12 text-fg-muted sm:pl-24">{item.body}</dd>
-                      </div>
-                    );
-                  })}
+                  {group.items.map((item) => (
+                    <div key={item.title} data-reveal className="group border-b border-line py-7 transition-colors duration-300 hover:bg-bg-raised sm:px-3">
+                      <dt className="flex items-center gap-x-4 sm:gap-x-6">
+                        <span
+                          className="grid size-8 shrink-0 place-items-center rounded-full bg-[rgb(44_108_28/0.1)] text-success transition-transform duration-500 group-hover:translate-x-1"
+                          aria-hidden="true"
+                        >
+                          <Check className="size-4" strokeWidth={2.25} />
+                        </span>
+                        <span className="text-display-s font-medium text-brand">{item.title}</span>
+                      </dt>
+                      <dd className="mt-3 max-w-2xl pl-12 text-fg-muted sm:pl-14">{item.body}</dd>
+                    </div>
+                  ))}
                 </dl>
               </div>
             ))}

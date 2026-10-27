@@ -38,11 +38,14 @@ test("portfolio placeholders are clearly labelled and not indexable", async ({ p
   expect((await new AxeBuilder({ page }).withTags(TAGS).analyze()).violations).toEqual([]);
 });
 
-test("homepage shows packages and work sections, and the nav links to both", async ({ page }) => {
+test("homepage shows packages, work and testimonial sections, and the nav links to packages and work", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "Start with a logo." })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Recent projects" })).toBeVisible();
+  const quotes = page.locator("section[aria-labelledby=testimonials-title]");
+  await expect(quotes.getByRole("heading", { name: "What our clients say" })).toBeVisible();
+  await expect(quotes.getByText("Preview placeholder")).toHaveCount(3);
   const nav = page.getByRole("navigation", { name: "Main" });
   await expect(nav.getByRole("link", { name: "Pricing" })).toBeVisible();
   await expect(nav.getByRole("link", { name: "Work" })).toBeVisible();

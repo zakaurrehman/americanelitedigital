@@ -39,7 +39,6 @@ export type Service = {
 
 export type Pillar = {
   id: PillarId;
-  number: string;
   name: string;
   tagline: string;
   description: string;
@@ -49,7 +48,6 @@ export type Pillar = {
 export const pillars: Pillar[] = [
   {
     id: "brand",
-    number: "01",
     name: "Brand",
     tagline: "Identity, logos, voice and collateral.",
     description: "Define how your business looks, sounds and stands apart — then apply it consistently everywhere.",
@@ -57,7 +55,6 @@ export const pillars: Pillar[] = [
   },
   {
     id: "build",
-    number: "02",
     name: "Build",
     tagline: "Websites, web apps and mobile software.",
     description: "Design and engineer the websites and applications your customers and team use every day.",
@@ -65,7 +62,6 @@ export const pillars: Pillar[] = [
   },
   {
     id: "grow",
-    number: "03",
     name: "Grow",
     tagline: "SEO, paid media, social, email and content.",
     description: "Put your business in front of the right people and turn their attention into customers.",
@@ -73,7 +69,6 @@ export const pillars: Pillar[] = [
   },
   {
     id: "advise",
-    number: "04",
     name: "Advise",
     tagline: "Audits, roadmaps and technology decisions.",
     description: "Know where you stand, what to do next, and which tools will get you there.",

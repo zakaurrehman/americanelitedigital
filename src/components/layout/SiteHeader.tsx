@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Mail, MapPin, Phone, Star } from "lucide-react";
 import { offer } from "@/content/company";
 import { primaryNav } from "@/content/navigation";
-import { getPillar, servicesInPillarOrder } from "@/content/services";
+import { servicesInPillarOrder } from "@/content/services";
 import { site } from "@/content/site";
 import { BrandMark } from "./BrandMark";
 import { HeaderNav, type ServiceNavItem } from "./HeaderNav";
@@ -13,7 +13,7 @@ export function SiteHeader() {
     label: s.name,
     href: `/${s.slug}/`,
     summary: s.summary,
-    pillar: getPillar(s.pillar).number,
+    pillar: s.pillar,
   }));
 
   // The navy utility bar scrolls away (negative sticky offset of its own height) while the main

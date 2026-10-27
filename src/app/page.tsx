@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Building2, CheckCircle2, Handshake, Layers, Lightbulb, MapPin, Phone, Target, Users } from "lucide-react";
+import { Building2, CheckCircle2, Layers, Lightbulb, MapPin, Phone } from "lucide-react";
 import { HeroVisual } from "@/components/home/HeroVisual";
 import { Marquee } from "@/components/home/Marquee";
 import { InquirySection } from "@/components/inquiry/InquirySection";
@@ -9,8 +9,10 @@ import { InsightList } from "@/components/sections/InsightList";
 import { PackageCards } from "@/components/sections/Packages";
 import { ProcessSteps } from "@/components/sections/ProcessSteps";
 import { ServiceIndex } from "@/components/sections/ServiceIndex";
+import { Testimonials } from "@/components/sections/Testimonials";
 import { WorkList } from "@/components/sections/WorkList";
 import { ArrowLink, ButtonLink } from "@/components/ui/ButtonLink";
+import { differentiatorIcons } from "@/components/ui/icons";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { differentiators, generalFaqs, offer, processSteps } from "@/content/company";
 import { insightsByDate } from "@/content/insights";
@@ -18,6 +20,7 @@ import { photos } from "@/content/media";
 import { packageIntro, packagesEnabled } from "@/content/packages";
 import { visibleProjects } from "@/content/projects";
 import { formattedAddress, site } from "@/content/site";
+import { visibleTestimonials } from "@/content/testimonials";
 import { pageMetadata } from "@/lib/seo";
 import emblem from "../../public/brand/emblem.png";
 
@@ -32,10 +35,10 @@ export const metadata: Metadata = {
 };
 
 const marqueeItems = ["Brand identity", "Logo design", "Websites", "E-commerce", "Web apps", "Mobile apps", "SEO", "Social media", "Digital strategy"];
-const whyIcons = [Lightbulb, Target, CheckCircle2, Handshake, Users];
 
 export default function HomePage() {
   const work = visibleProjects();
+  const quotes = visibleTestimonials();
   return (
     <>
       {/* ── Hero ── */}
@@ -66,7 +69,7 @@ export default function HomePage() {
             </p>
             <div className="motion-rise mt-10 flex flex-wrap items-center gap-3 [--delay:180ms]">
               <ButtonLink href="/contact-us/" arrow magnetic>
-                Start a project
+                Get a free consultation
               </ButtonLink>
               <ButtonLink href="/services/" variant="secondary" magnetic>
                 Explore services
@@ -123,6 +126,12 @@ export default function HomePage() {
           </div>
           <div className="mt-14">
             <ServiceIndex />
+          </div>
+          <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3" data-reveal>
+            <ButtonLink href="/services/#compare" variant="secondary">
+              Compare services
+            </ButtonLink>
+            <ArrowLink href="/contact-us/">Not sure? Get a free consultation</ArrowLink>
           </div>
         </div>
       </section>
@@ -183,7 +192,7 @@ export default function HomePage() {
             </ul>
             <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3" data-reveal>
               <ButtonLink href="/contact-us/" arrow>
-                Describe your project
+                Get free project ideas
               </ButtonLink>
               <ArrowLink href="/about-us/">About us</ArrowLink>
             </div>
@@ -268,19 +277,14 @@ export default function HomePage() {
             </div>
             <ol data-spotlight className="grid content-start gap-4 lg:col-span-7">
               {differentiators.map((item, i) => {
-                const Icon = whyIcons[i] ?? CheckCircle2;
+                const Icon = differentiatorIcons[i] ?? CheckCircle2;
                 return (
                   <li key={item.title} data-reveal style={{ "--i": i } as React.CSSProperties} className="card spot flex gap-5 rounded-[var(--radius-lg)] p-6 sm:p-7">
                     <span className="icon-tile">
                       <Icon aria-hidden="true" className="size-5" strokeWidth={1.75} />
                     </span>
                     <div>
-                      <h3 className="text-title font-semibold">
-                        <span className="index-num mr-2 text-[1.1em]" aria-hidden="true">
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
-                        {item.title}
-                      </h3>
+                      <h3 className="text-title font-semibold">{item.title}</h3>
                       <p className="mt-2 text-fg-muted">{item.body}</p>
                     </div>
                   </li>
@@ -293,6 +297,17 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {quotes.length > 0 && (
+        <section aria-labelledby="testimonials-title" className="surface-raised section">
+          <div className="container-site">
+            <SectionHeading id="testimonials-title" eyebrow="Testimonials" title="What our clients say" />
+            <div className="mt-14">
+              <Testimonials items={quotes} />
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ── Insights ── */}
       <section aria-labelledby="insights-title" className="section">

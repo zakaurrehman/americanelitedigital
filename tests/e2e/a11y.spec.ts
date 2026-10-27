@@ -42,7 +42,7 @@ test.describe("axe on interactive states", () => {
 
   test("form with validation errors", async ({ page }) => {
     await page.goto("/contact-us/");
-    await page.getByRole("button", { name: "Send inquiry" }).click();
+    await page.getByRole("button", { name: "Request free consultation" }).click();
     await expect(page.getByRole("alert").first()).toBeVisible();
     expect(await audit(page)).toEqual([]);
   });

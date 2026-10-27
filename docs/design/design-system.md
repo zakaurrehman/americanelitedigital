@@ -92,7 +92,7 @@ All ratios were computed from the hex values with the WCAG relative-luminance fo
 | Role | Family | Notes |
 |---|---|---|
 | Display, text and UI | **Geist** (variable) | Headings are 600 weight in navy, with tight negative tracking at display sizes. Body text is 400 in ink. |
-| Accent | **Instrument Serif** *italic*, via `.em-accent` and `.index-num` | One phrase per headline in red (gold on navy), e.g. "*One team.*", plus gold-700 index numerals |
+| Accent | **Instrument Serif** *italic*, via `.em-accent` and `.index-num` | One phrase per headline in red (gold on navy), e.g. "*One team.*", plus gold-700 index numerals. **Numerals only for real sequences** (process steps, next steps, legal contents) and never repeated on a page — unordered lists use icons from `src/components/ui/icons.ts` (`tests/e2e/conversion.spec.ts` enforces this) |
 | Eyebrow | Geist 700 italic, uppercase, 0.2em tracking, via `.eyebrow` | Red-700 after a gold gradient rule, mirroring the logo's "— DIGITAL —" lockup. `.eyebrow-plain` is grey with no rule. |
 
 Loading is unchanged from v2:
@@ -137,6 +137,7 @@ Sizes are fluid `clamp()` values.
 | Photo frame | `.photo` | Rounded, with an inner hairline and a mist placeholder; blur-up placeholders come from `next/image` |
 | Glass card | `.glass-card` | White at 90% with blur, for floating cards over photos (hero) |
 | Icon tile | `.icon-tile` | A 48 px rounded tile with a sky tint and a navy icon (gold on navy) |
+| Mobile CTA bar | `.mobile-cta` (`MobileCtaBar`) | Phones only: Call + Free consultation pinned to the bottom; the body reserves its height, and it hides while a form field has focus |
 | Hero collage | `HeroVisual` | Two photos, brand and growth cards (no figures), an offer pill, and the spinning emblem badge, with pointer parallax by layer |
 | Marquee | `Marquee` | A navy band of service names with gold stars, edged by gold rules; scrolls continuously after the first interaction and pauses on hover; `aria-hidden` |
 | Practice cards | `ServiceIndex` (`full`) | A photo header with a number badge and an overlay title, the description, and the service links; zooms and lifts on hover |

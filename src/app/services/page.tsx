@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { InquirySection } from "@/components/inquiry/InquirySection";
 import { PageHeader } from "@/components/sections/PageHeader";
 import { ProcessSteps } from "@/components/sections/ProcessSteps";
-import { ServiceIndex } from "@/components/sections/ServiceIndex";
+import { ServicePackages } from "@/components/sections/ServicePackages";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { processSteps } from "@/content/company";
@@ -36,14 +36,27 @@ export default function ServicesPage() {
         image={photos.workshop}
         actions={
           <ButtonLink href="#inquiry" arrow magnetic>
-            Start a project
+            Get a free consultation
           </ButtonLink>
         }
       />
 
-      <section aria-label="Service practices" className="section">
+      <section id="compare" aria-labelledby="compare-title" className="section scroll-mt-[calc(var(--header-h)+1rem)]">
         <div className="container-site">
-          <ServiceIndex headingLevel="h2" />
+          <SectionHeading
+            id="compare-title"
+            eyebrow="Compare services"
+            size="l"
+            title={
+              <>
+                Choose the service <span className="em-accent">you need.</span>
+              </>
+            }
+            intro="What each service is for, what’s included, and how to start. Not sure which fits? Book a free consultation and we’ll recommend the right mix."
+          />
+          <div className="mt-14">
+            <ServicePackages />
+          </div>
         </div>
       </section>
 
