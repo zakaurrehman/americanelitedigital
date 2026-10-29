@@ -110,6 +110,12 @@ test.describe("crawler files", () => {
     expect(text).toContain(`Sitemap: ${CANONICAL_ORIGIN}/sitemap.xml`);
   });
 
+  test("favicon.ico is served for clients that request it directly", async ({ request }) => {
+    const response = await request.get("/favicon.ico");
+    expect(response.status()).toBe(200);
+    expect(response.headers()["content-type"]).toMatch(/image\/(x-icon|vnd\.microsoft\.icon)/);
+  });
+
   test("RSS feed is served at the old WordPress URL", async ({ request }) => {
     const response = await request.get("/feed/");
     expect(response.headers()["content-type"]).toContain("application/rss+xml");

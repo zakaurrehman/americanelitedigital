@@ -20,7 +20,9 @@ The artwork itself was not redrawn or recoloured, apart from the dark-background
 | `lockup-horizontal-on-dark.png` | Footer. The blue "AMERICAN ELITE" lettering becomes chrome (white, keeping its metallic shading) and "DIGITAL" is brightened, so both read on navy. The gold is unchanged. |
 | `emblem.png` | Lion, laurel and ribbon: hero badge, the "Part of American Elite Enterprises" card, call-to-action watermark, favicon and Apple touch icon |
 
-`public/og/default.png` (the social share image) is generated from `lockup-full.png` and the `workshop` photo. `src/app/icon.png` (192 px, transparent) and `apple-icon.png` (180 px, on white) are generated from `emblem.png`.
+`public/og/default.png` (the social share image) is generated from `lockup-full.png` and the `workshop` photo. `src/app/icon.png` (192 px, transparent), `apple-icon.png` (180 px, on white) and `favicon.ico` (16/32/48/64 px, for clients that request `/favicon.ico` directly) are generated from `emblem.png`.
+
+The logo pack handed to the client also contains 3× enlargements (4293 × 3297). The website doesn't use them: every place the logo appears is already covered by the files above at its largest on-screen size, including on 2–3× screens, and at those sizes the two look the same.
 
 ## Photography
 
