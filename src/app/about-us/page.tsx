@@ -106,11 +106,11 @@ export default function AboutPage() {
         <div className="container-site grid items-center gap-14 lg:grid-cols-12">
           <div className="lg:col-span-6" data-reveal="scale">
             <div className="relative">
-              <div aria-hidden="true" className="absolute inset-[-12%] rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgb(244_196_52/0.22),transparent_65%)]" />
+              <div aria-hidden="true" className="absolute inset-[-12%] rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgb(229_176_48/0.22),transparent_65%)]" />
               <div className="relative rounded-[var(--radius-xl)] bg-white p-8 shadow-[var(--shadow-lg)] sm:p-12">
                 <Image
                   src={logo}
-                  alt="The American Elite Digital logo: a gold lion within a green laurel wreath above a blue star-and-stripe ribbon, over the words “American Elite” in navy and “Digital” in red."
+                  alt="The American Elite Digital logo: a metallic gold lion within a green laurel wreath above a royal-blue ribbon with five gold stars and red stripes, over the words “American Elite” in blue and “Digital” in red."
                   sizes="(min-width: 1024px) 40vw, 100vw"
                   className="w-full"
                 />

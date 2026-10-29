@@ -1,4 +1,4 @@
-# Design system — "American Elite" (v3)
+# Design system — "American Elite" (v3.1)
 
 All tokens live in `src/app/globals.css`. This document explains them and when to use each.
 
@@ -10,19 +10,19 @@ All tokens live in `src/app/globals.css`. This document explains them and when t
 
 ### Brand palette
 
-Every value below was sampled from the owner's logo artwork.
+Every value below was sampled from the owner's logo artwork. **v3.1 (2026-10-29):** the owner supplied an updated, metallic logo (royal-blue lettering and ribbon, metallic gold lion, five gold stars), so the blues and golds were re-sampled from it. Sky blue is no longer in the logo and was replaced by the ribbon's royal blue.
 
 | Token | Hex | From the logo | Role |
 |---|---|---|---|
-| `--navy-800` | `#041C74` | "AMERICAN ELITE" wordmark | Headings, links, secondary buttons (`--brand`, `--heading`, `--link`) |
+| `--navy-800` | `#032886` | "AMERICAN ELITE" wordmark (royal blue) | Headings, links, secondary buttons (`--brand`, `--heading`, `--link`) |
 | `--navy-900` / `-950` | `#0A1A52` / `#06123A` | Wordmark shading | Navy bands, cards on navy |
 | `--red-500` | `#E8041C` | "DIGITAL" | Primary button, serif accent phrases, small marks (`--accent`) |
 | `--red-700` | `#C40318` | — | Red **text** at body sizes (`--accent-strong`), button hover |
 | `--red-800` | `#A8031A` | — | Error text (`--danger-fg`) |
-| `--gold-400` / `-500` / `-300` | `#F4C434` / `#F4AC34` / `#F9EB3B` | Lion and the rules either side of "DIGITAL" | Gold rules, stars, step rings, spotlight; the primary button and accents on navy |
+| `--gold-400` / `-500` / `-300` | `#E5B030` / `#C8921D` / `#F6DF7E` | Metallic lion and rules: body, shade, highlight | Gold rules, stars, step rings, spotlight; the primary button and accents on navy. `--gold-metal` combines them into the metallic gradient |
 | `--gold-700` | `#8A5A00` | — | Gold **text** on light surfaces (index numerals, `--gold-ink`) |
-| `--blue-500` | `#04ACEC` | Ribbon | Background light, charts, process beam end (decorative) |
-| `--blue-600` | `#0477BF` | — | Focus ring and field focus (`--focus`) |
+| `--blue-500` | `#1268DC` | Ribbon highlight | Background light, charts, process beam end (decorative) |
+| `--blue-600` | `#0B55C8` | Ribbon | Focus ring and field focus (`--focus`) |
 | `--green-700` | `#2C6C1C` | Laurel | Success and check marks (`--success-fg`) |
 
 ### Neutrals
@@ -44,7 +44,7 @@ All ratios were computed from the hex values with the WCAG relative-luminance fo
 | Pair | Ratio | Use |
 |---|---|---|
 | ink on white / paper | 17.96 / 16.87 | Body text |
-| navy-800 on white / paper | 14.75 / 13.86 | Headings, links |
+| navy-800 on white / paper | 12.71 / 11.94 | Headings, links |
 | slate-600 on white / paper | 8.04 / 7.55 | Secondary text |
 | slate-500 on white / paper / mist | 5.80 / 5.45 / 5.07 | Meta text |
 | red-700 on white / paper | 6.23 / 5.85 | Eyebrows and small red text |
@@ -54,19 +54,20 @@ All ratios were computed from the hex values with the WCAG relative-luminance fo
 | gold-700 on white / paper | 5.93 / 5.57 | Index numerals |
 | green-700 on white | 6.42 | Success |
 | red-800 on white / danger-bg | 7.80 / 6.84 | Errors (always with an icon and text) |
-| blue-600 on white | 4.78 | Focus ring (needs 3:1) |
+| blue-600 on white | 6.67 | Focus ring (needs 3:1) |
 | slate-400 on white | 3.65 | Field borders (needs 3:1) |
 | white on navy-950 / navy-900 | 18.18 / 16.37 | Text on navy bands and cards |
 | `#B9C4E0` (muted) on navy-950 / navy-900 | 10.42 / 9.38 | Secondary text on navy |
 | `#93A0C4` (subtle) on navy-950 / navy-900 | 6.98 / 6.29 | Meta text on navy |
-| gold-400 on navy-950 | 11.07 | Accents, eyebrows and focus on navy |
-| navy-950 on gold-400 / gold-300 | 11.07 / 14.69 | Primary button on navy, and its hover |
+| gold-400 on navy-950 | 9.16 | Accents, eyebrows and focus on navy |
+| navy-950 on gold-300 / gold-400 / gold-500 | 13.65 / 9.16 / 6.57 | Primary button on navy: every stop of its metallic gradient |
 
 **Rules:**
 
 - `--accent` (red-500) is for large display text and marks. Red text below about 24 px uses `--accent-strong` (red-700).
 - Gold (300/400/500) is decorative on light surfaces. Gold text on light surfaces uses `--gold-ink` (gold-700).
-- Sky blue is decorative only; it is never used for text.
+- Blue-500 is decorative only; it is never used for text.
+- **Metallic accents** echo the logo: `--gold-metal` (shade → highlight → shade) on eyebrow dashes, link underlines, gold rules and the gold button on navy. The red primary button has a soft top gloss that stops above the text, so its contrast is unchanged.
 - The axe suite (`tests/e2e/a11y.spec.ts`) re-checks rendered contrast on every page and every state it tests.
 
 ### Surfaces
@@ -85,7 +86,7 @@ All ratios were computed from the hex values with the WCAG relative-luminance fo
 | `--shadow-md` | Hover |
 | `--shadow-lg` | Photos and floating cards |
 
-**Brand light:** `.aurora` places sky and gold radial fields behind headers, `.bg-grid` is a faint navy grid that fades out, and `.bg-stars` is a faint gold star pattern on navy.
+**Brand light:** `.aurora` places royal-blue and gold radial fields behind headers, `.bg-grid` is a faint navy grid that fades out, and `.bg-stars` is a faint gold star pattern on navy.
 
 ## 2. Typography
 
@@ -133,18 +134,18 @@ Sizes are fluid `clamp()` values.
 | Buttons | `.btn-primary`, `.btn-secondary`, `ButtonLink` (`magnetic`) | **Primary:** red pill with white text and a red glow; a light sweep crosses it on hover. On navy it becomes a gold pill with navy text. **Secondary:** navy outline that fills navy from the left on hover (white outline on navy). |
 | Eyebrow | `.eyebrow`, `.eyebrow-center` | The "— DIGITAL —" motif |
 | Gold rule | `.gold-rule`, `GlowRule` | A gold gradient line; `GlowRule` adds a centre star |
-| Card | `.card` + `.lift` + `.spot` | White with a hairline and shadow. Lifts 6 px on hover; the cursor spotlight draws a gold-to-sky border. |
+| Card | `.card` + `.lift` + `.spot` | White with a hairline and shadow. Lifts 6 px on hover; the cursor spotlight draws a gold-to-blue border. |
 | Photo frame | `.photo` | Rounded, with an inner hairline and a mist placeholder; blur-up placeholders come from `next/image` |
 | Glass card | `.glass-card` | White at 90% with blur, for floating cards over photos (hero) |
-| Icon tile | `.icon-tile` | A 48 px rounded tile with a sky tint and a navy icon (gold on navy) |
+| Icon tile | `.icon-tile` | A 48 px rounded tile with a blue tint and a navy icon (gold on navy) |
 | Mobile CTA bar | `.mobile-cta` (`MobileCtaBar`) | Phones only: Call + Free consultation pinned to the bottom; the body reserves its height, and it hides while a form field has focus |
 | Hero collage | `HeroVisual` | Two photos, brand and growth cards (no figures), an offer pill, and the spinning emblem badge, with pointer parallax by layer |
 | Marquee | `Marquee` | A navy band of service names with gold stars, edged by gold rules; scrolls continuously after the first interaction and pauses on hover; `aria-hidden` |
 | Practice cards | `ServiceIndex` (`full`) | A photo header with a number badge and an overlay title, the description, and the service links; zooms and lifts on hover |
 | Page header | `PageHeader` (`image`, `aside`) | Text with an optional photo that moves with the pointer. On service pages the "What's included" card overlaps the photo's lower edge. |
-| Process | `ProcessSteps` | Gold-ringed step markers; the beam fills gold → red → sky as you scroll |
+| Process | `ProcessSteps` | Gold-ringed step markers; the beam fills gold → red → blue as you scroll |
 | FAQ | `FaqList` | White cards; an open item gets a gold border, and its plus becomes a red disc |
-| Inquiry | `InquirySection` + `InquiryForm` | Contact cards plus a white form card in a gold-to-sky gradient frame |
+| Inquiry | `InquirySection` + `InquiryForm` | Contact cards plus a white form card in a gold-to-blue gradient frame |
 | Call-to-action band | `CtaBand` | A navy panel with stars, light fields, an emblem watermark and a gold button |
 | Navigation | `SiteHeader`, `HeaderNav` | Utility bar. The pill nav has a white "lamp" carrying a red-to-gold underline. The Services panel has a navy promo column and a white list. The mobile `<dialog>` is light. |
 | Footer | `SiteFooter` | Navy, with a gold top rule, star pattern and the white-wordmark logo; ends at the copyright line |

@@ -44,7 +44,7 @@ export function PageHeader({ crumbs, eyebrow, title, lead, actions, aside, image
                   className="relative"
                   style={{ transform: "translate3d(calc(var(--tx, 0) * -12px), calc(var(--ty, 0) * -12px), 0)", transition: "transform 900ms cubic-bezier(0.16,1,0.3,1)" }}
                 >
-                  <div aria-hidden="true" className="absolute -right-4 -top-4 size-28 rounded-full bg-[radial-gradient(circle,rgb(244_196_52/0.45),transparent_70%)]" />
+                  <div aria-hidden="true" className="absolute -right-4 -top-4 size-28 rounded-full bg-[radial-gradient(circle,rgb(229_176_48/0.45),transparent_70%)]" />
                   <div className="motion-photo photo aspect-[4/3] rounded-[var(--radius-xl)] shadow-[var(--shadow-lg)]">
                     <Image src={image.src} alt={image.alt} fill loading="eager" placeholder="blur" sizes="(min-width: 1024px) 34vw, 100vw" className="object-cover" />
                   </div>

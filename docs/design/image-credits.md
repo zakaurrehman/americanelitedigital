@@ -2,18 +2,25 @@
 
 ## Logo
 
-The source is the owner's artwork, `American Logo.jpg` (4500 × 3480 JPEG on white), supplied on 2026-10-24.
+The source is the owner's **updated, metallic logo** (1431 × 1099 JPEG on white, sent over WhatsApp), supplied on 2026-10-27. It replaced the flat logo of 2026-10-24 (`American Logo.jpg`).
 
-`public/brand/` holds transparent PNGs derived from it. A colour-to-alpha pass against white separates the anti-aliased edges cleanly, so the files work on any background. The artwork itself was not redrawn or recoloured, apart from the dark-background variant noted below.
+`public/brand/` holds transparent PNGs made from it by `node scripts/build-logo-assets.mjs <logo.jpg>`.
+- **Background:** the white background, the letter counters and the gaps in the mane become transparent.
+- **Shine:** the metallic highlights stay opaque, so they don't turn see-through on navy.
+- **Edges:** only the anti-aliased edges get partial transparency.
+
+The artwork itself was not redrawn or recoloured, apart from the dark-background variant noted below. A few sub-pixel specks where the laurel leaves meet the stem remain; they're invisible at the sizes used.
+
+**For print or larger sizes:** the WhatsApp copy is compressed and 1431 px wide. Ask the designer for the original file (ideally vector: AI, EPS, SVG or PDF) and re-run the script on it.
 
 | File | Use |
 |---|---|
 | `lockup-full.png` | About page "Our mark", Organization JSON-LD logo, social image |
 | `lockup-horizontal.png` | Header: the emblem beside the wordmark |
-| `lockup-horizontal-on-dark.png` | Footer. The navy "AMERICAN ELITE" lettering is switched to white and the emblem made opaque, so it reads on navy. Red and gold are unchanged. |
+| `lockup-horizontal-on-dark.png` | Footer. The blue "AMERICAN ELITE" lettering becomes chrome (white, keeping its metallic shading) and "DIGITAL" is brightened, so both read on navy. The gold is unchanged. |
 | `emblem.png` | Lion, laurel and ribbon: hero badge, the "Part of American Elite Enterprises" card, call-to-action watermark, favicon and Apple touch icon |
 
-`public/og/default.png` (the social share image) is generated from `lockup-full.png` and the `workshop` photo.
+`public/og/default.png` (the social share image) is generated from `lockup-full.png` and the `workshop` photo. `src/app/icon.png` (192 px, transparent) and `apple-icon.png` (180 px, on white) are generated from `emblem.png`.
 
 ## Photography
 

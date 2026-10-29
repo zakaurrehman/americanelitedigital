@@ -50,13 +50,14 @@ src/
     inquiry/rate-limit.ts      In-memory fixed-window limiter
     inquiry/deliver.ts         SMTP and webhook delivery (server-only)
   instrumentation.ts           Logs a startup error if production has no delivery channel
-public/brand/                  Logo assets derived from the owner's artwork (lockups, emblem)
+public/brand/                  Logo assets made from the owner's artwork by scripts/build-logo-assets.mjs (lockups, emblem)
 public/images/photos/          Licensed Unsplash photography (see docs/design/image-credits.md)
 public/images/insights/        Article images (resized from the WordPress originals)
 public/og/default.png          Branded social card
 tests/unit/                    Vitest
 tests/e2e/                     Playwright (+ support/webhook-sink.mjs, support/routes.ts)
 scripts/test-preview.mjs       Builds with unpublished features to .next-preview/ and tests them
+scripts/build-logo-assets.mjs  Rebuilds public/brand/ from a new logo JPEG (see docs/design/image-credits.md)
 scripts/axe-timing.mjs         Diagnostic, not part of the suite: times axe rule groups on one page
 ```
 

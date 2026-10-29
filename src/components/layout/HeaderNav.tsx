@@ -126,7 +126,7 @@ export function HeaderNav({ services, links, phone, email }: Props) {
             ref={lampRef}
             aria-hidden="true"
             style={{ transform: "translateX(var(--lamp-x, 0px))", width: "var(--lamp-w, 0px)" }}
-            className="pointer-events-none absolute bottom-1 left-0 top-1 rounded-full bg-white opacity-0 shadow-[0_2px_10px_-2px_rgb(4_28_116/0.18)] transition-[transform,width,opacity] duration-[420ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+            className="pointer-events-none absolute bottom-1 left-0 top-1 rounded-full bg-white opacity-0 shadow-[0_2px_10px_-2px_rgb(3_40_134/0.18)] transition-[transform,width,opacity] duration-[420ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
           >
             <span className="absolute -bottom-[5px] left-1/2 h-[3px] w-7 -translate-x-1/2 rounded-full bg-gradient-to-r from-accent via-[var(--gold-500)] to-[var(--gold-300)]" />
           </span>

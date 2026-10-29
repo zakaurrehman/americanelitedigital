@@ -20,7 +20,7 @@ export function HeroVisual() {
   return (
     <div className="relative mx-auto w-full max-w-[36rem] pb-12 pt-4 sm:pb-16 lg:pt-0">
       {/* Gold ring behind the main photo */}
-      <div aria-hidden="true" className="absolute right-[4%] top-[6%] size-[70%] rounded-full border-2 border-dashed border-[rgb(244_172_52/0.45)]" style={layer(10)} />
+      <div aria-hidden="true" className="absolute right-[4%] top-[6%] size-[70%] rounded-full border-2 border-dashed border-[rgb(200_146_29/0.45)]" style={layer(10)} />
 
       <div style={layer(14)} className="relative ml-auto w-[82%]">
         <div className="motion-photo photo aspect-[4/5] rounded-[var(--radius-xl)] shadow-[var(--shadow-lg)]">
@@ -80,7 +80,7 @@ export function HeroVisual() {
                 {[30, 42, 38, 55, 62, 74, 88].map((h, i) => (
                   <span
                     key={h}
-                    className="chart-bar flex-1 rounded-t-[4px] bg-gradient-to-t from-[var(--blue-500)] to-[rgb(4_172_236/0.35)]"
+                    className="chart-bar flex-1 rounded-t-[4px] bg-gradient-to-t from-[var(--blue-500)] to-[rgb(18_104_220/0.35)]"
                     style={{ height: `${h}%`, "--i": i } as React.CSSProperties}
                   />
                 ))}

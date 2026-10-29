@@ -2,7 +2,7 @@
 
 This file records three decisions:
 
-- **v3, "American Elite"** (current, 2026-10-24): a light design built from the owner's logo.
+- **v3, "American Elite"** (current, 2026-10-24; updated to v3.1 on 2026-10-29 for the owner's new metallic logo): a light design built from the owner's logo.
 - **v2, "Obsidian Atelier"** (superseded): a dark premium redesign.
 - **v1, "American Editorial"** (superseded): the first rebuild.
 
@@ -17,6 +17,29 @@ The owner supplied the official logo and asked for three changes:
 3. Make the site modern, advanced and professional, with images, animation and effects.
 
 Everything else carried over unchanged: routes, the inquiry backend, SEO, feature flags (pricing stays hidden), the motion system's reduced-motion and no-JavaScript guarantees, and the no-fabrication rules.
+
+## v3.1 — the updated logo (2026-10-29)
+
+The owner sent an updated, metallic version of the logo and asked for the site to follow it. It has the same lion, laurel, ribbon and wordmark, but:
+
+- the lettering and ribbon are a glossy **royal blue**, with no sky blue left;
+- the lion and rules are **metallic gold**;
+- the ribbon has **five gold stars**.
+
+What changed on the site:
+
+| Logo element | Before (v3) | Now (v3.1) |
+|---|---|---|
+| "AMERICAN ELITE" wordmark | Navy `#041C74` | Royal blue `#032886`: headings, links, secondary buttons |
+| Ribbon | Sky blue `#04ACEC` | Royal blue `#1268DC` / `#0B55C8`: background light, charts, focus |
+| Lion and rules | Yellow gold `#F4AC34` → `#F9EB3B` | Metallic gold `#C8921D` / `#E5B030` / `#F6DF7E`, combined as the `--gold-metal` gradient |
+
+The metallic finish carries into the UI in a restrained way:
+- Eyebrow dashes, gold rules and link underlines use the metallic gold gradient.
+- The gold button on navy is metallic.
+- The red primary button has a soft gloss above its text.
+
+"DIGITAL" red, the laurel green, the layout, photography and motion are unchanged. The table below records the original v3 mapping.
 
 ## v3 — what the logo gives the system
 

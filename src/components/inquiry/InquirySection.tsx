@@ -31,8 +31,8 @@ export function InquirySection({ title = "Tell us what you’re planning.", intr
 
   return (
     <section id="inquiry" aria-labelledby="inquiry-title" className="section relative isolate overflow-hidden">
-      <div aria-hidden="true" className="absolute left-[-10%] top-1/3 -z-10 h-[70%] w-[60%] rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgb(4_172_236/0.12),transparent_65%)]" />
-      <div aria-hidden="true" className="absolute bottom-0 right-[-10%] -z-10 h-[60%] w-[50%] rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgb(244_172_52/0.14),transparent_65%)]" />
+      <div aria-hidden="true" className="absolute left-[-10%] top-1/3 -z-10 h-[70%] w-[60%] rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgb(18_104_220/0.12),transparent_65%)]" />
+      <div aria-hidden="true" className="absolute bottom-0 right-[-10%] -z-10 h-[60%] w-[50%] rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgb(200_146_29/0.14),transparent_65%)]" />
       <div className="container-site grid gap-14 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5" data-reveal>
           <p className="eyebrow mb-6">Free consultation</p>
