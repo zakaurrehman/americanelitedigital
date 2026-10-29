@@ -6,7 +6,7 @@ The site is a standard Next.js server build and runs anywhere Node.js 20.9+ runs
 
 | ✔ | Item | Owner | Notes |
 |---|---|---|---|
-| ☐ | Delivery channel configured | Owner / dev | Set `SMTP_*` and `CONTACT_TO_EMAIL` (Hostinger mailbox: `smtp.hostinger.com`, port 465), and/or `CONTACT_WEBHOOK_URL`. Without them the form returns 503, by design, and the server logs an error at startup. |
+| ☐ | Delivery channel configured | Owner / dev | Set `SMTP_*` and `CONTACT_TO_EMAIL` (this domain's mail is on Titan: `smtp.titan.email`, port 465), and/or `CONTACT_WEBHOOK_URL`. Without them the form returns 503, by design, and the server logs an error at startup. |
 | ☐ | Real test inquiry received | Owner | Submit once on the staging URL and confirm it arrives. Tests only ever used a local webhook sink. |
 | ☐ | `NEXT_PUBLIC_SITE_URL=https://americanelitedigital.com` | Dev | Used for canonicals, sitemap and Open Graph. |
 | ☐ | `SHOW_PACKAGES` and `PREVIEW_PLACEHOLDER_WORK` unset | Dev | Preview-only switches. |
@@ -31,7 +31,7 @@ Without these variables the live form can't deliver: visitors see an error that 
 
    | Name | Value |
    |---|---|
-   | `SMTP_HOST` | `smtp.hostinger.com` |
+   | `SMTP_HOST` | `smtp.titan.email`. The domain's MX records point to Titan, Hostinger's email partner. Use `smtp.hostinger.com` only if the mailbox is moved to "Hostinger Email". |
    | `SMTP_PORT` | `465` |
    | `SMTP_SECURE` | `true` |
    | `SMTP_USER` | the full mailbox address, e.g. `info@americanelitedigital.com` |
@@ -59,7 +59,17 @@ Notes: the in-memory rate limiter is per serverless instance. Use the Hobby plan
 5. Test on the subdomain using the checklist above.
 6. Cut over by pointing the main domain at the Node.js app in hPanel, or swapping the document root / proxy target. Keep the WordPress files and database in place.
 
-If your Hostinger plan can't run Node.js, use Option A for the website and keep the mailbox at Hostinger. The form sends email through Hostinger SMTP either way.
+If your Hostinger plan can't run Node.js (Node.js web apps need the Business or a Cloud plan), use Option A for the website and keep the mailbox where it is. The form sends email through the mailbox's SMTP server (Titan) either way.
+
+### Pointing the domain at Vercel when DNS is at Hostinger
+
+The nameservers are `ns1/ns2.dns-parking.com` (Hostinger), so DNS is edited in hPanel. **Keep the nameservers**; change only the website records:
+
+1. Screenshot every current DNS record first, so you can roll back.
+2. Turn off Hostinger's CDN for the domain. It points the domain and `www` at `*.cdn.hstgr.net`.
+3. Delete the existing `@` A and AAAA records. Add the A record Vercel shows (usually `76.76.21.21`).
+4. Point `www` at the CNAME Vercel shows (usually `cname.vercel-dns.com`).
+5. **Don't touch** the MX (`mx1/mx2.titan.email`), the SPF TXT record, or any DKIM/DMARC records. Email depends on them.
 
 ## After go-live (first two weeks)
 
